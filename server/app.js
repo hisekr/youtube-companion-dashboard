@@ -13,9 +13,20 @@ const pool = require("./db/pool");
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  process.env.FRONTEND_URL
+];
+
 app.use(
   cors({
-    origin: "https://youtube-companion-dashboard-client.vercel.app/",
+    origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
     credentials: true,
   })
 );
@@ -29,7 +40,11 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 48 * 60 * 60 * 1000 },
+    cookie: {
+    secure: process.env.NODE_ENV === 'production', 
+    maxAge: 24 * 60 * 60 * 1000, 
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  },
   })
 );
 
