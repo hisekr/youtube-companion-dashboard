@@ -20,7 +20,7 @@ async function handleCallback(req, res) {
   try {
     const { tokens } = await oauth2Client.getToken(code);
     req.session.userTokens = tokens;
-    res.redirect('http://localhost:3000/dashboard');
+    res.redirect('https://youtube-companion-dashboard-client.vercel.app/dashboard');
   } catch (err) {
     res.status(500).json({ error: 'Authentication failed' });
   }
