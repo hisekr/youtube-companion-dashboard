@@ -15,7 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://youtube-companion-dashboard-client.vercel.app/",
     credentials: true,
   })
 );
